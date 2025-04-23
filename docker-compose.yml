@@ -1,0 +1,23 @@
+version: '3.8'
+
+services:
+  pyroscope:
+    image: pyroscope/pyroscope:latest
+    container_name: pyroscope
+    ports:
+      - "4040:4040"
+    command: server
+
+
+  nuxt-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: nuxt-app
+    ports:
+      - "3000:3000"
+    environment:
+      - PYROSCOPE_SERVER_ADDRESS="http://pyroscope:4040"
+    depends_on:
+      - pyroscope
+
